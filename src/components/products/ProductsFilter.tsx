@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useTransition } from "react";
+import { useTransition, useState, useEffect, useCallback } from "react";
 import { Select, Label, ListBox, SearchField } from "@heroui/react";
 
 const CATEGORIES = [
@@ -30,31 +30,52 @@ export default function ProductsFilter() {
   const currentCategory = searchParams.get("category") || "All";
   const currentSort = searchParams.get("sort") || "default";
 
-  // Update query parameters in the URL
-  const updateQueryParams = (name: string, value: string) => {
-    const params = new URLSearchParams(searchParams.toString());
+  // Local state for smooth real-time typing input
+  const [searchTerm, setSearchTerm] = useState(currentSearch);
+  const [prevSearch, setPrevSearch] = useState(currentSearch);
 
-    // Delete default or empty params from URL
-    if (
-      value &&
-      value !== "All" &&
-      value !== "default" &&
-      value.trim() !== ""
-    ) {
-      params.set(name, value);
-    } else {
-      params.delete(name);
-    }
+  // Sync local state during render if URL changes externally (e.g. back/forward button)
+  if (currentSearch !== prevSearch) {
+    setPrevSearch(currentSearch);
+    setSearchTerm(currentSearch);
+  }
 
-    const queryString = params.toString();
+  // Memoized URL parameter updater function to prevent re-creation on every render
+  const updateQueryParams = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
 
-    // Navigate to base path if query string is empty
-    const targetUrl = queryString ? `${pathname}?${queryString}` : pathname;
+      if (
+        value &&
+        value !== "All" &&
+        value !== "default" &&
+        value.trim() !== ""
+      ) {
+        params.set(name, value);
+      } else {
+        params.delete(name);
+      }
 
-    startTransition(() => {
-      router.push(targetUrl);
-    });
-  };
+      const queryString = params.toString();
+      const targetUrl = queryString ? `${pathname}?${queryString}` : pathname;
+
+      startTransition(() => {
+        router.push(targetUrl);
+      });
+    },
+    [pathname, router, searchParams],
+  );
+
+  // Debounce logic: Delay URL update until user stops typing for 300ms
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (searchTerm !== currentSearch) {
+        updateQueryParams("search", searchTerm);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm, currentSearch, updateQueryParams]);
 
   return (
     <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-indigo-100/80 dark:border-slate-800/80 p-4 sm:p-6 rounded-3xl shadow-xl shadow-indigo-950/5 dark:shadow-slate-950/40 mb-10 space-y-4">
@@ -62,8 +83,8 @@ export default function ProductsFilter() {
         {/* Search Input */}
         <div className="md:col-span-6 lg:col-span-6">
           <SearchField
-            value={currentSearch}
-            onChange={(value) => updateQueryParams("search", value)}
+            value={searchTerm}
+            onChange={(value) => setSearchTerm(value)}
             className="w-full"
           >
             <Label className="sr-only">Search products</Label>
