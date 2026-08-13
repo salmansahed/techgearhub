@@ -1,8 +1,9 @@
+import HeroSection from "../components/home/HeroSection";
+
 const Home = () => {
   return (
     <div>
-      <h1>Welcome to Tech Gear Hub!</h1>
-      <p>Your one-stop shop for all things tech!</p>
+      <HeroSection />
     </div>
   );
 };

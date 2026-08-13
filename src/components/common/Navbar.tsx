@@ -40,7 +40,7 @@ export default function Navbar() {
                 href="/"
                 className="flex items-center gap-2.5 sm:gap-3 group shrink-0"
               >
-                <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-tr from-indigo-600 via-purple-600 to-pink-500 p-0.5 shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
+                <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-linear-to-tr from-indigo-600 to-purple-600 p-0.5 shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
                   <div className="w-full h-full bg-white dark:bg-slate-950 rounded-xl flex items-center justify-center">
                     <span className="font-extrabold text-transparent bg-clip-text bg-linear-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 text-base sm:text-lg">
                       T
@@ -50,7 +50,7 @@ export default function Navbar() {
                 <div className="flex flex-col">
                   <span className="text-lg sm:text-xl font-black text-slate-900 dark:text-white tracking-tight leading-none">
                     TechGear
-                    <span className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 dark:from-indigo-400 dark:via-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+                    <span className="bg-linear-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400 bg-clip-text text-transparent">
                       Hub
                     </span>
                   </span>
@@ -90,7 +90,7 @@ export default function Navbar() {
                 </Link>
 
                 <Link href="/register">
-                  <Button className="bg-linear-to-r from-indigo-600 via-purple-600 to-pink-600 hover:from-indigo-700 hover:to-pink-700 text-white text-sm px-5 py-4.5 rounded-xl shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
+                  <Button className="bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white text-sm px-5 py-4.5 rounded-xl shadow-md shadow-indigo-500/25 hover:shadow-lg hover:shadow-indigo-500/40 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200">
                     Register
                   </Button>
                 </Link>
