@@ -1,17 +1,15 @@
 import Link from "next/link";
-import { Button } from "@heroui/react";
-import { HiStar, HiShoppingBag } from "react-icons/hi2";
-import ProductsFilter from "../../components/products/ProductsFilter";
 import { FaSearch } from "react-icons/fa";
+import ProductsFilter from "../../components/products/ProductsFilter";
+import ProductCard, { Product } from "../../components/common/ProductCard";
 
-// Mock Products Data (Database level simulation)
-const MOCK_PRODUCTS = [
+// Mock Products Data
+const MOCK_PRODUCTS: Product[] = [
   {
     id: "1",
     name: "Keychron K2 Pro Wireless Mechanical Keyboard",
     category: "Keyboards",
     price: 99,
-    originalPrice: 120,
     rating: 4.9,
     reviews: 128,
     tag: "Best Seller",
@@ -22,7 +20,6 @@ const MOCK_PRODUCTS = [
     name: "Logitech MX Master 3S Performance Wireless Mouse",
     category: "Accessories",
     price: 89,
-    originalPrice: 100,
     rating: 4.8,
     reviews: 95,
     tag: "Popular",
@@ -33,10 +30,9 @@ const MOCK_PRODUCTS = [
     name: "Anker MagGo 3-in-1 Wireless Charging Station",
     category: "Chargers",
     price: 59,
-    originalPrice: 75,
     rating: 4.7,
     reviews: 64,
-    tag: "15% OFF",
+    tag: "Popular",
     badgeColor: "bg-emerald-500",
   },
   {
@@ -44,7 +40,6 @@ const MOCK_PRODUCTS = [
     name: "BenQ ScreenBar Halo LED Monitor Light",
     category: "Desk Setup",
     price: 139,
-    originalPrice: 150,
     rating: 4.9,
     reviews: 210,
     tag: "Hot Deal",
@@ -55,7 +50,6 @@ const MOCK_PRODUCTS = [
     name: "Glorious Model O Wireless Gaming Mouse",
     category: "Accessories",
     price: 79,
-    originalPrice: 90,
     rating: 4.6,
     reviews: 82,
     tag: "Gaming",
@@ -66,7 +60,6 @@ const MOCK_PRODUCTS = [
     name: "NuPhy Air75 V2 Low Profile Mechanical Keyboard",
     category: "Keyboards",
     price: 119,
-    originalPrice: 135,
     rating: 4.9,
     reviews: 154,
     tag: "New",
@@ -91,7 +84,7 @@ export default async function ProductsPage({
     sort = "default",
   } = await searchParams;
 
-  // Server-Side Filtering Simulation (Replaces backend query in real app)
+  // Server-Side Filtering & Sorting
   const filteredProducts = MOCK_PRODUCTS.filter((product) => {
     const matchesSearch = product.name
       .toLowerCase()
@@ -131,70 +124,11 @@ export default async function ProductsPage({
         {/* Client Side Filter Component */}
         <ProductsFilter />
 
-        {/* Product Grid (Server Rendered) */}
+        {/* Product Grid */}
         {filteredProducts.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="group relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-indigo-100/80 dark:border-slate-800/80 rounded-3xl p-4 shadow-lg shadow-indigo-950/5 dark:shadow-slate-950/40 hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  {/* Image Container */}
-                  <div className="relative w-full h-48 sm:h-52 bg-slate-100 dark:bg-slate-800/60 rounded-2xl overflow-hidden flex items-center justify-center mb-4">
-                    <span
-                      className={`absolute top-3 left-3 text-[10px] uppercase tracking-wider font-extrabold text-white ${product.badgeColor} px-2.5 py-1 rounded-lg shadow-sm z-10`}
-                    >
-                      {product.tag}
-                    </span>
-
-                    <div className="w-20 h-20 rounded-2xl bg-indigo-500/10 dark:bg-indigo-400/10 border border-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-extrabold text-xl group-hover:scale-110 transition-transform duration-300">
-                      Tech
-                    </div>
-                  </div>
-
-                  {/* Category & Rating */}
-                  <div className="flex items-center justify-between gap-2 mb-2">
-                    <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
-                      {product.category}
-                    </span>
-                    <div className="flex items-center gap-1 text-xs font-bold text-slate-700 dark:text-slate-300">
-                      <HiStar className="w-4 h-4 text-amber-400 fill-amber-400" />
-                      <span>{product.rating}</span>
-                      <span className="text-slate-400 font-normal">
-                        ({product.reviews})
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Title */}
-                  <Link href={`/products/${product.id}`}>
-                    <h3 className="text-base font-extrabold text-slate-900 dark:text-white line-clamp-2 mb-3 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
-                      {product.name}
-                    </h3>
-                  </Link>
-                </div>
-
-                {/* Price & Cart Button */}
-                <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
-                  <div>
-                    <div className="text-lg font-black text-slate-900 dark:text-white leading-none">
-                      ${product.price}.00
-                    </div>
-                    <div className="text-xs font-semibold text-slate-400 line-through mt-0.5">
-                      ${product.originalPrice}.00
-                    </div>
-                  </div>
-
-                  <Button
-                    variant="tertiary"
-                    className="bg-indigo-50 dark:bg-indigo-950/60 hover:bg-indigo-600 hover:text-white dark:hover:bg-indigo-600 text-indigo-600 dark:text-indigo-400 font-bold p-2.5 rounded-xl border border-indigo-200/60 dark:border-indigo-800/60 transition-all duration-300 cursor-pointer"
-                    aria-label="Add to cart"
-                  >
-                    <HiShoppingBag className="w-5 h-5" />
-                  </Button>
-                </div>
-              </div>
+              <ProductCard key={product.id} product={product} />
             ))}
           </div>
         ) : (

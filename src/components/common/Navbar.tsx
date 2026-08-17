@@ -17,6 +17,10 @@ export default function Navbar() {
     { name: "Dashboard", href: "/dashboard" },
   ];
 
+  // Hide Navbar on Dashboard Page
+  if (currentPath.includes("/dashboard")) {
+    return null;
+  }
   return (
     <>
       {/* Click Outside Backdrop Overlay */}
